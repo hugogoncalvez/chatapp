@@ -1,4 +1,6 @@
+import 'package:chatapp/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'package:chatapp/models/usuario.dart';
@@ -11,10 +13,10 @@ class UsuariosPage extends StatefulWidget {
 
 class _UsuariosPageState extends State<UsuariosPage> {
   final usuarios = [
-    Usuario(email: 'test1@test.com', nombre: 'Maria', onLine: true, uid: '1'),
-    Usuario(email: 'test2@test.com', nombre: 'Pedro', onLine: false, uid: '2'),
-    Usuario(email: 'test3@test.com', nombre: 'Juan', onLine: true, uid: '3'),
-    Usuario(email: 'test4@test.com', nombre: 'Elena', onLine: false, uid: '4')
+    Usuario(email: 'test1@test.com', nombre: 'Maria', online: true, uid: '1'),
+    Usuario(email: 'test2@test.com', nombre: 'Pedro', online: false, uid: '2'),
+    Usuario(email: 'test3@test.com', nombre: 'Juan', online: true, uid: '3'),
+    Usuario(email: 'test4@test.com', nombre: 'Elena', online: false, uid: '4')
   ];
 
   final RefreshController _refreshController =
@@ -22,18 +24,24 @@ class _UsuariosPageState extends State<UsuariosPage> {
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+    final usuarioNombre = authService.usuario.nombre;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text(
-          'Mi nombre',
-          style: TextStyle(color: Colors.black54),
+        title: Text(
+          usuarioNombre,
+          style: const TextStyle(color: Colors.black54),
         ),
         elevation: 1,
         centerTitle: true,
         leading: IconButton(
           color: Colors.black54,
-          onPressed: () {},
+          onPressed: () {
+            // TODO: desconectarnos del socket server
+            Navigator.pushReplacementNamed(context, 'login');
+            AuthService.deleteToken();
+          },
           icon: const Icon(Icons.exit_to_app),
         ),
         actions: [
@@ -79,7 +87,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
           height: context.height * 0.012,
           decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: (usuario.onLine) ? Colors.green[300] : Colors.red[400]),
+              color: (usuario.online) ? Colors.green[300] : Colors.red[400]),
         ));
   }
 
