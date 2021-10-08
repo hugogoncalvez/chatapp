@@ -1,3 +1,4 @@
+import 'package:chatapp/services/socket_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:chatapp/services/auth_service.dart';
@@ -9,7 +10,7 @@ class LoadingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: chekLoginState(context),
+        future: checkLoginState(context),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -19,12 +20,15 @@ class LoadingPage extends StatelessWidget {
     );
   }
 
-  Future chekLoginState(BuildContext context) async {
+  Future checkLoginState(BuildContext context) async {
     final authService = Provider.of<AuthService>(context, listen: false);
+    final socketService = Provider.of<SocketService>(context, listen: false);
     final autenticado = await authService.idLoggedIn();
 
     if (autenticado) {
-      // TODO: conectar en el Socket server
+      // conectar en el Socket server
+
+      socketService.connect();
 
       // Navigator.pushReplacementNamed(context, 'usuarios');
       Navigator.pushReplacement(

@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:chatapp/helpers/mostar_alerta.dart';
 import 'package:chatapp/services/auth_service.dart';
+import 'package:chatapp/services/socket_service.dart';
 import 'package:chatapp/widgets/custom_botton.dart';
-import 'package:flutter/material.dart';
 
 import 'package:chatapp/widgets/labels.dart';
 import 'package:chatapp/widgets/logo.dart';
@@ -53,7 +54,9 @@ class __FormState extends State<_Form> {
   final passController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    //
     final authService = Provider.of<AuthService>(context);
+    final socketService = Provider.of<SocketService>(context);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: context.height * 0.05),
       child: Column(
@@ -90,11 +93,13 @@ class __FormState extends State<_Form> {
                           passController.text.trim());
 
                       if (registerOk == true) {
-                        // TODO:  Conectar a nuestro Socket
+                        // Conectar a nuestro Socket
+                        socketService.connect();
 
                         Navigator.pushReplacementNamed(context, 'usuarios');
                       } else {
-                        mostrarAlerta(context, 'Registro Incorrecto', registerOk);
+                        mostrarAlerta(
+                            context, 'Registro Incorrecto', registerOk);
                       }
                     })
         ],

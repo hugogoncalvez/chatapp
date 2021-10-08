@@ -8,5 +8,9 @@ extension MediaQueryValues on BuildContext {
   String? get route => ModalRoute.of(this)!.settings.name;
 }
 
+// SE DEBE IMPORTAR EN LOS ARCHIVOS DONDE SE QUIERA UTILIZAR
+//  import 'package: NOMBRE DE LA APP/helpers/size.dart';
 
-//  import 'package:chatapp/helpers/size.dart';
+// UTILIZACION
+
+//  height: context.height * 0.95, COMO EJEMPLO

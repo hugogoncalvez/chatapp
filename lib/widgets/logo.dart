@@ -20,8 +20,8 @@ class Logo extends StatelessWidget {
             Text('Messenger',
                 style: TextStyle(
                     fontSize: (context.isPortrait)
-                        ? context.height * 0.035
-                        : context.width * 0.035))
+                        ? context.height * 0.03
+                        : context.width * 0.03))
           ],
         ),
       ),
